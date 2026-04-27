@@ -56,4 +56,17 @@ const getCart = async (req, res) => {
 
 }
 
-export { addToCart, removeFromCart, getCart };
+//clear cart data
+const clearCart = async (req, res) => {
+    try {
+        let userData = await userModel.findById(req.body.userId);
+        let cartData = {};  // Empty object clears the cart
+        await userModel.findByIdAndUpdate(req.body.userId, {cartData: cartData});
+        res.json({success: true, message: "Cart cleared successfully"})
+    } catch (error) {
+        console.error("Error clearing cart:", error);
+        res.json({ success: false, message: "Internal server error" });
+    }   
+}
+
+export { addToCart, removeFromCart, getCart, clearCart };
